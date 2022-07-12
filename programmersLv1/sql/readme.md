@@ -56,3 +56,13 @@ GROUP BY HOUR
 (SELECT LEVEL-1 AS lv FROM dual CONNECT BY LEVEL<=24) b
 WHERE a.HOUR(+) = b.lv
 ORDER BY b.lv
+
+10. 우유와 요거트 둘다 구입한 장바구니 찾기(Id순으로 정렬)
+-- 코드를 입력하세요
+- Select distinct(A.CART_ID)
+From CART_PRODUCTS A, CART_PRODUCTS B
+where A.Cart_Id = B.Cart_id 
+And   A.Name = 'Milk'
+And   B.Name = 'Yogurt'
+And   A.name != B.name
+order by A.cart_id
