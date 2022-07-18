@@ -56,12 +56,12 @@ pripe
 go
 
 # Java => 필수
-generic (class g, method g) : static인 이유
-collection (list,set,map) => 배열
-lamda
-functional interface
-stream
-optional
+generic (class g, method g) : static인 이유 *
+collection (list,set,map) => 배열 * 
+lamda *
+functional interface *
+stream *
+optional 
 
 # DataBase
 server architecture
@@ -147,3 +147,38 @@ connectBy, prior 계층형쿼리
 - MONTHS_BETWEEN : 날짜 끼리의 차이
 - NEXT_DAY : 원하는 요일의 날짜 찾기
 - TRUNC(SYSDATE) : 년월 일만 나옴
+
+## 정규식
+SLECT REGEXP_SUBSTR('ADFADFA12','\d+$')
+FROM DUAL
+// 끝의 값 뽑기
+
+### Meta Character(패턴)
+- REGEXP_... : 정규식 패턴
+- \d : 숫자 [1-9]와 같다 (digit)
+
+## REPLACE, TRANSLATE
+- replace : 문자열로 매칭
+- transalte : 문자 단위로 매칭
+
+## SQL로 주민등록번호 검사하기
+```
+    SELECT DECODE(CALC,PRT,'맞음','틀림'), CALC, PRT
+    FROM(
+    SELECT SUBSTR(11-MOD(SUM(SUBSTR(REPLACE(:V_JUMIN,'-'),ROWNUM,1) * SUBSTR('234567892345',ROWNUM,1)),11),-1) CALC
+        ,SUBSTR(:V_JUMIN,-1) PRT
+    FROM dual
+    CONNECT BY LEVEL < LENGTH(REPLACE(:V_JUMIN,'-')));
+```
+
+## SQL로 대소문자 변경
+```
+    SELECT VAL value
+        ,TRANSLATE(VAL,low_al||upper_al,upper_al||low_al) result
+    FROM (
+            SELECT 'abcdefghijklmnopqrstuvwxyz' low_al
+                ,UPPER('abcdefghijklmnopqrstuvwxyz') upper_al
+                ,:V_VAL VAL
+            FROM dual
+        );
+```
